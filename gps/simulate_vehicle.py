@@ -34,4 +34,4 @@ def update_gps_file():
 if __name__ == '__main__':
     while True:
         update_gps_file()
-        time.sleep(0.1)  # Wait for 1 second before the next update
+        time.sleep(1)  # Wait for 1 second before the next update
