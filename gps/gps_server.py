@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 import os
 
@@ -18,6 +18,21 @@ def read_gps_file():
         lat, lon = line.split(',')
         return float(lat), float(lon)
 
+def calculate_energy_consumption(route):
+    distance = 0
+    elevation_gain = 0
+
+    for leg in route['legs']:
+        distance += leg['distance']['value']
+
+        for step in leg['steps']:
+            if 'elevation' in step:
+                elevation_diff = step['elevation']['endLocation']['lng'] - step['elevation']['startLocation']['lng']
+                if elevation_diff > 0:
+                    elevation_gain += elevation_diff
+
+    return distance * 0.001 + elevation_gain * 0.01
+
 @app.route('/gps')
 def gps_data():
     lat, lon = read_gps_file()
@@ -25,6 +40,13 @@ def gps_data():
         return jsonify({'error': 'GPS verisi bulunamadı'}), 404
     data = {'latitude': lat, 'longitude': lon}
     return jsonify(data)
+
+@app.route('/calculateEnergyConsumption', methods=['POST'])
+def calculate_energy():
+    data = request.get_json()
+    route = data.get('route')
+    energy_consumption = calculate_energy_consumption(route)
+    return jsonify({'energyConsumption': energy_consumption})
 
 if __name__ == '__main__':
     app.run(debug=True)

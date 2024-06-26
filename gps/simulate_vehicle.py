@@ -23,15 +23,15 @@ def update_gps_file():
     increment = 0.0001 + (random_number / 100000)
 
     # Update latitude and longitude
-    new_lat = round(lat - increment, 8)
-    new_lon = round(lon - increment, 8)
+    new_lat = round(lat + increment, 8)
+    new_lon = round(lon + increment, 8)
 
     with open('gps.txt', 'w') as file:
-        file.write(f"{new_lat},{new_lon}\n")
+        file.write(f"{lat},{new_lon}\n")
 
     print(f"Updated GPS coordinates: {new_lat}, {new_lon}")
 
 if __name__ == '__main__':
     while True:
         update_gps_file()
-        time.sleep(1)  # Wait for 1 second before the next update
+        time.sleep(0.5)  # Wait for 1 second before the next update
