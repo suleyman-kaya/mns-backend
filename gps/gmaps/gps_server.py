@@ -52,5 +52,22 @@ def calculate_energy():
     energy_consumption = calculate_energy_consumption(route)
     return jsonify({'energyConsumption': energy_consumption})
 
+# Yeni eklenen endpoint'ler
+@app.route('/batteryVoltage')
+def battery_voltage():
+    return jsonify({'value': 123000})
+
+@app.route('/batteryCurrent')
+def battery_current():
+    return jsonify({'value': 123000})
+
+@app.route('/totalJoulesUsed')
+def total_joules_used():
+    return jsonify({'value': 123000})
+
+@app.route('/lastCalculatedGPSspeed')
+def last_calculated_gps_speed():
+    return jsonify({'value': 123000})
+
 if __name__ == '__main__':
     app.run(debug=False, threaded=True)
